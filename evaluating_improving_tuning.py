@@ -54,12 +54,8 @@ classifier = Sequential()
 
 # Adding the input layer and the first hidden layer
 classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
-# classifier.add(Dropout(p = 0.1))
-
 # Adding the second hidden layer
 classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
-# classifier.add(Dropout(p = 0.1))
-
 # Adding the output layer
 classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
 
@@ -143,9 +139,9 @@ def build_classifier(optimizer):
     classifier.compile(optimizer = optimizer, loss = 'binary_crossentropy', metrics = ['accuracy'])
     return classifier
 classifier = KerasClassifier(build_fn = build_classifier)
-parameters = {'batch_size': [25, 32],
-              'epochs': [100, 500],
-              'optimizer': ['adam', 'rmsprop']}
+parameters = {'batch_size': [25],
+              'epochs': [600, 750],
+              'optimizer': ['Nadam']}
 grid_search = GridSearchCV(estimator = classifier,
                            param_grid = parameters,
                            scoring = 'accuracy',
@@ -153,3 +149,5 @@ grid_search = GridSearchCV(estimator = classifier,
 grid_search = grid_search.fit(X_train, y_train)
 best_parameters = grid_search.best_params_
 best_accuracy = grid_search.best_score_
+#Adams with batch 25 and epoch 500 provided best accuracy at .85112
+#Nadams with batch 25 and epoch 500 yielded .855
