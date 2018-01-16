@@ -114,7 +114,21 @@ mean = accuracies.mean()
 variance = accuracies.std()
 
 # Improving the ANN
+
 # Dropout Regularization to reduce overfitting if needed
+classifier = Sequential()
+classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
+classifier.add(Dropout(p = 0.1))
+classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+classifier.add(Dropout(p = 0.1))
+classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+
+# Fitting the ANN to the Training set
+classifier.fit(X_train, y_train, batch_size = 10, epochs = 100)
+
+y_pred = classifier.predict(X_test)
+y_pred = (y_pred > 0.5)
 
 # Tuning the ANN
 from keras.wrappers.scikit_learn import KerasClassifier
